@@ -16,5 +16,7 @@ export declare class GenericPagingJSONModel {
     serialize: () => GenericPagingJSONModelSerializedState;
     getCurrentPage: () => GenericNumberValueJSONModel;
     getPageSize: () => GenericNumberValueJSONModel;
+    getCurrentPageValue: () => number;
+    getPageSizeValue: () => number;
     setValue: (currentPage: number | undefined, pageSize: number | undefined) => void;
 }

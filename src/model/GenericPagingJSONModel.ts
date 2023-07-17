@@ -51,6 +51,9 @@ export class GenericPagingJSONModel {
     public getCurrentPage = () => this.currentPageJSONModel
     public getPageSize = () => this.pageSizeJSONModel
 
+    public getCurrentPageValue = (): number => this.currentPageJSONModel.getValue() ?? DEFAULT_CURRENT_PAGE
+    public getPageSizeValue = (): number => this.pageSizeJSONModel.getValue() ?? DEFAULT_PAGE_SIZE
+
     public setValue = (currentPage: number | undefined, pageSize: number | undefined) => {
         this.currentPageJSONModel.setValue(currentPage)
         this.pageSizeJSONModel.setValue(pageSize)
