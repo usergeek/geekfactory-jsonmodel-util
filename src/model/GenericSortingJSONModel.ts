@@ -6,13 +6,13 @@ export const SORT_ODER_ASC = "asc"
 export const SORT_ODER_DESC = "desc"
 
 export type SortOrder = typeof SORT_ODER_ASC | typeof SORT_ODER_DESC
-export type GenericSortingJSONModelArrayValue<Key> = GenericSortingItemJSONModelSerializedState<Key>
-export type GenericSortingJSONModelSerializedState<Value> = GenericArrayValueJSONModelSerializedState<GenericSortingJSONModelArrayValue<Value>>
+export type GenericSortingJSONModelArrayValue<SortingItemKey> = GenericSortingItemJSONModelSerializedState<SortingItemKey>
+export type GenericSortingJSONModelSerializedState<SortingItemKey> = GenericArrayValueJSONModelSerializedState<GenericSortingJSONModelArrayValue<SortingItemKey>>
 
-export class GenericSortingJSONModel<Key> {
-    private sortValuesJSONModel = new GenericArrayValueJSONModel<GenericSortingJSONModelArrayValue<Key>>()
+export class GenericSortingJSONModel<SortingItemKey> {
+    private sortValuesJSONModel = new GenericArrayValueJSONModel<GenericSortingJSONModelArrayValue<SortingItemKey>>()
 
-    constructor(serializedState?: GenericSortingJSONModelSerializedState<Key>) {
+    constructor(serializedState?: GenericSortingJSONModelSerializedState<SortingItemKey>) {
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
@@ -21,11 +21,11 @@ export class GenericSortingJSONModel<Key> {
         this.sortValuesJSONModel.reset()
     }
 
-    public overwriteFromSerializedState = (serializedState?: GenericSortingJSONModelSerializedState<Key>) => {
+    public overwriteFromSerializedState = (serializedState?: GenericSortingJSONModelSerializedState<SortingItemKey>) => {
         this.sortValuesJSONModel.overwriteFromSerializedState(serializedState)
     }
 
-    public serialize = (): GenericSortingJSONModelSerializedState<Key> => {
+    public serialize = (): GenericSortingJSONModelSerializedState<SortingItemKey> => {
         return this.sortValuesJSONModel.serialize()
     }
 
@@ -36,18 +36,18 @@ export class GenericSortingJSONModel<Key> {
 // Item
 ////////////////////////////////////////////////
 
-export type GenericSortingItemKey<Key> = Key | undefined
+export type GenericSortingItemKey<SortingItemKey> = SortingItemKey | undefined
 
-export type GenericSortingItemJSONModelSerializedState<Key> = {
-    key: GenericSortingItemKey<Key>
+export type GenericSortingItemJSONModelSerializedState<SortingItemKey> = {
+    key: GenericSortingItemKey<SortingItemKey>
     order: GenericStringValueJSONModelSerializedState<SortOrder>
 }
 
-export class GenericSortingItemJSONModel<Key extends string> {
-    private keyJSONModel = new GenericStringValueJSONModel<Key>()
+export class GenericSortingItemJSONModel<SortingItemKey extends string> {
+    private keyJSONModel = new GenericStringValueJSONModel<SortingItemKey>()
     private orderJSONModel = new GenericStringValueJSONModel<SortOrder>()
 
-    constructor(serializedState?: GenericSortingItemJSONModelSerializedState<Key>) {
+    constructor(serializedState?: GenericSortingItemJSONModelSerializedState<SortingItemKey>) {
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
@@ -57,16 +57,16 @@ export class GenericSortingItemJSONModel<Key extends string> {
         this.orderJSONModel.reset()
     }
 
-    public overwriteFromSerializedState = (serializedState?: GenericSortingItemJSONModelSerializedState<Key>) => {
+    public overwriteFromSerializedState = (serializedState?: GenericSortingItemJSONModelSerializedState<SortingItemKey>) => {
         if (serializedState) {
             this.keyJSONModel.overwriteFromSerializedState(serializedState.key)
             this.orderJSONModel.overwriteFromSerializedState(serializedState.order)
         }
     }
 
-    public serialize = (): GenericSortingItemJSONModelSerializedState<Key> => {
-        const value: GenericSortingItemJSONModelSerializedState<Key> = {
-            key: this.keyJSONModel.serialize() as GenericSortingItemKey<Key>,
+    public serialize = (): GenericSortingItemJSONModelSerializedState<SortingItemKey> => {
+        const value: GenericSortingItemJSONModelSerializedState<SortingItemKey> = {
+            key: this.keyJSONModel.serialize() as GenericSortingItemKey<SortingItemKey>,
             order: this.orderJSONModel.serialize(),
         };
         if (_.every(value, _.isEmpty)) {

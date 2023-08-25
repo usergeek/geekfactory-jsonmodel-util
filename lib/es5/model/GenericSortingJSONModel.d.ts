@@ -3,28 +3,28 @@ import { GenericArrayValueJSONModel, GenericArrayValueJSONModelSerializedState }
 export declare const SORT_ODER_ASC = "asc";
 export declare const SORT_ODER_DESC = "desc";
 export declare type SortOrder = typeof SORT_ODER_ASC | typeof SORT_ODER_DESC;
-export declare type GenericSortingJSONModelArrayValue<Key> = GenericSortingItemJSONModelSerializedState<Key>;
-export declare type GenericSortingJSONModelSerializedState<Value> = GenericArrayValueJSONModelSerializedState<GenericSortingJSONModelArrayValue<Value>>;
-export declare class GenericSortingJSONModel<Key> {
+export declare type GenericSortingJSONModelArrayValue<SortingItemKey> = GenericSortingItemJSONModelSerializedState<SortingItemKey>;
+export declare type GenericSortingJSONModelSerializedState<SortingItemKey> = GenericArrayValueJSONModelSerializedState<GenericSortingJSONModelArrayValue<SortingItemKey>>;
+export declare class GenericSortingJSONModel<SortingItemKey> {
     private sortValuesJSONModel;
-    constructor(serializedState?: GenericSortingJSONModelSerializedState<Key>);
+    constructor(serializedState?: GenericSortingJSONModelSerializedState<SortingItemKey>);
     reset: () => void;
-    overwriteFromSerializedState: (serializedState?: GenericSortingJSONModelSerializedState<Key>) => void;
-    serialize: () => GenericSortingJSONModelSerializedState<Key>;
-    getSortValuesJSONModel: () => GenericArrayValueJSONModel<GenericSortingJSONModelArrayValue<Key>>;
+    overwriteFromSerializedState: (serializedState?: GenericSortingJSONModelSerializedState<SortingItemKey>) => void;
+    serialize: () => GenericSortingJSONModelSerializedState<SortingItemKey>;
+    getSortValuesJSONModel: () => GenericArrayValueJSONModel<GenericSortingJSONModelArrayValue<SortingItemKey>>;
 }
-export declare type GenericSortingItemKey<Key> = Key | undefined;
-export declare type GenericSortingItemJSONModelSerializedState<Key> = {
-    key: GenericSortingItemKey<Key>;
+export declare type GenericSortingItemKey<SortingItemKey> = SortingItemKey | undefined;
+export declare type GenericSortingItemJSONModelSerializedState<SortingItemKey> = {
+    key: GenericSortingItemKey<SortingItemKey>;
     order: GenericStringValueJSONModelSerializedState<SortOrder>;
 };
-export declare class GenericSortingItemJSONModel<Key extends string> {
+export declare class GenericSortingItemJSONModel<SortingItemKey extends string> {
     private keyJSONModel;
     private orderJSONModel;
-    constructor(serializedState?: GenericSortingItemJSONModelSerializedState<Key>);
+    constructor(serializedState?: GenericSortingItemJSONModelSerializedState<SortingItemKey>);
     reset: () => void;
-    overwriteFromSerializedState: (serializedState?: GenericSortingItemJSONModelSerializedState<Key>) => void;
-    serialize: () => GenericSortingItemJSONModelSerializedState<Key>;
-    getKeyJSONModel: () => GenericStringValueJSONModel<Key>;
+    overwriteFromSerializedState: (serializedState?: GenericSortingItemJSONModelSerializedState<SortingItemKey>) => void;
+    serialize: () => GenericSortingItemJSONModelSerializedState<SortingItemKey>;
+    getKeyJSONModel: () => GenericStringValueJSONModel<SortingItemKey>;
     getOrderJSONModel: () => GenericStringValueJSONModel<SortOrder>;
 }
