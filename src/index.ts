@@ -5,7 +5,7 @@ import {GenericNumberValueJSONModel, GenericNumberValueJSONModelSerializedState}
 import {GenericStringValueJSONModel, GenericStringValueJSONModelSerializedState} from "./model/GenericStringValueJSONModel";
 import {GenericFilterItemJSONModelSerializedState, GenericFilterJSONModel, GenericFilterJSONModelArrayValue, GenericFilterJSONModelSerializedState} from "./model/GenericFilterJSONModel";
 import {GenericPagingJSONModel, GenericPagingJSONModelDefaults, GenericPagingJSONModelSerializedState} from "./model/GenericPagingJSONModel";
-import {GenericSortingJSONModel, GenericSortingJSONModelSerializedState, SortOrder} from "./model/GenericSortingJSONModel";
+import {GenericSortingJSONModel, GenericSortingJSONModelSerializedState, GenericSortingItemJSONModel, GenericSortingItemJSONModelSerializedState, SortOrder, SORT_ODER_ASC, SORT_ODER_DESC} from "src/model/GenericSortingJSONModel";
 
 export {
     AutoSequenceJSONModel,
@@ -27,5 +27,9 @@ export {
     GenericPagingJSONModelSerializedState,
     GenericSortingJSONModel,
     GenericSortingJSONModelSerializedState,
+    GenericSortingItemJSONModel,
+    GenericSortingItemJSONModelSerializedState,
     SortOrder,
+    SORT_ODER_ASC,
+    SORT_ODER_DESC,
 }

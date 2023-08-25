@@ -2,7 +2,10 @@ declare type ValueType = boolean | undefined;
 export declare type GenericBooleanValueJSONModelSerializedState = ValueType;
 export declare class GenericBooleanValueJSONModel {
     private value;
-    constructor(serializedState?: GenericBooleanValueJSONModelSerializedState);
+    private defaultValue;
+    constructor(serializedState?: GenericBooleanValueJSONModelSerializedState, defaultValue?: ValueType);
+    setDefaultValue: (defaultValue?: ValueType) => void;
+    isDefaultValue: () => boolean;
     reset: () => void;
     overwriteFromSerializedState: (serializedState?: GenericBooleanValueJSONModelSerializedState) => void;
     serialize: () => GenericBooleanValueJSONModelSerializedState | undefined;

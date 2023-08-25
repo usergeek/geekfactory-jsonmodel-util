@@ -1,13 +1,13 @@
 import { GenericArrayValueJSONModel, GenericArrayValueJSONModelSerializedState } from "./GenericArrayValueJSONModel";
 import { GenericStringValueJSONModel } from "./GenericStringValueJSONModel";
-export declare type GenericFilterJSONModelSerializedState<Value> = GenericArrayValueJSONModelSerializedState<Value>;
+export declare type GenericFilterJSONModelSerializedState<Name, Value> = GenericArrayValueJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>;
 export declare type GenericFilterJSONModelArrayValue<Name, Value> = GenericFilterItemJSONModelSerializedState<Name, Value>;
 export declare class GenericFilterJSONModel<Name, Value> {
     private filterValuesJSONModel;
-    constructor(serializedState?: GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>);
+    constructor(serializedState?: GenericFilterJSONModelSerializedState<Name, Value>);
     reset: () => void;
-    overwriteFromSerializedState: (serializedState?: GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>) => void;
-    serialize: () => GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>;
+    overwriteFromSerializedState: (serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) => void;
+    serialize: () => GenericFilterJSONModelSerializedState<Name, Value>;
     getFilterValuesJSONModel: () => GenericArrayValueJSONModel<GenericFilterJSONModelArrayValue<Name, Value>>;
 }
 export declare type GenericFilterItemName<Name> = Name | undefined;

@@ -18,6 +18,10 @@ export class GenericNumberValueJSONModel {
         this.defaultValue = defaultValue
     }
 
+    public isDefaultValue = () => {
+        return this.value === this.defaultValue
+    }
+
     public reset = () => {
         this.value = this.defaultValue
     };

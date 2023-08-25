@@ -1,61 +1,58 @@
 import {GenericNumberValueJSONModel, GenericNumberValueJSONModelSerializedState} from "./GenericNumberValueJSONModel";
 
 export type GenericPagingJSONModelSerializedState = {
-    currentPage: GenericNumberValueJSONModelSerializedState
-    pageSize: GenericNumberValueJSONModelSerializedState
-}
+    page: GenericNumberValueJSONModelSerializedState
+    limit: GenericNumberValueJSONModelSerializedState
+} | undefined
 
-const DEFAULT_CURRENT_PAGE = 1
-const DEFAULT_PAGE_SIZE = 10
+const DEFAULT_PAGE = 1
+const DEFAULT_LIMIT = 10
 
 export type GenericPagingJSONModelDefaults = {
-    defaultPageSize?: number
-    defaultCurrentPage?: number
+    defaultLimit?: number
+    defaultPage?: number
 }
 
 export class GenericPagingJSONModel {
-    private currentPageJSONModel = new GenericNumberValueJSONModel(undefined)
-    private pageSizeJSONModel = new GenericNumberValueJSONModel(undefined)
+    private pageJSONModel = new GenericNumberValueJSONModel(undefined)
+    private limitJSONModel = new GenericNumberValueJSONModel(undefined)
 
     constructor(serializedState?: GenericPagingJSONModelSerializedState, defaults?: GenericPagingJSONModelDefaults) {
-        const {defaultCurrentPage = DEFAULT_CURRENT_PAGE, defaultPageSize = DEFAULT_PAGE_SIZE} = defaults || {}
-        if (defaultCurrentPage !== undefined) {
-            this.currentPageJSONModel.setDefaultValue(defaultCurrentPage)
-        }
-        if (defaultPageSize !== undefined) {
-            this.pageSizeJSONModel.setDefaultValue(defaultPageSize)
-        }
+        const {defaultPage = DEFAULT_PAGE, defaultLimit = DEFAULT_LIMIT} = defaults || {}
+        this.pageJSONModel.setDefaultValue(defaultPage)
+        this.limitJSONModel.setDefaultValue(defaultLimit)
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
 
     public reset = () => {
-        this.currentPageJSONModel.reset()
-        this.pageSizeJSONModel.reset()
+        this.pageJSONModel.reset()
+        this.limitJSONModel.reset()
     }
 
     public overwriteFromSerializedState = (serializedState?: GenericPagingJSONModelSerializedState) => {
-        if (serializedState) {
-            this.currentPageJSONModel.overwriteFromSerializedState(serializedState.currentPage)
-            this.pageSizeJSONModel.overwriteFromSerializedState(serializedState.pageSize)
-        }
+        this.pageJSONModel.overwriteFromSerializedState(serializedState?.page)
+        this.limitJSONModel.overwriteFromSerializedState(serializedState?.limit)
     }
 
     public serialize = (): GenericPagingJSONModelSerializedState => {
+        if (this.pageJSONModel.isDefaultValue() && this.limitJSONModel.isDefaultValue()) {
+            return undefined
+        }
         return {
-            currentPage: this.currentPageJSONModel.serialize(),
-            pageSize: this.pageSizeJSONModel.serialize(),
+            page: this.pageJSONModel.serialize(),
+            limit: this.limitJSONModel.serialize(),
         }
     }
 
-    public getCurrentPage = () => this.currentPageJSONModel
-    public getPageSize = () => this.pageSizeJSONModel
+    public getPageJSONModel = () => this.pageJSONModel
+    public getLimitJSONModel = () => this.limitJSONModel
 
-    public getCurrentPageValue = (): number => this.currentPageJSONModel.getValue() ?? DEFAULT_CURRENT_PAGE
-    public getPageSizeValue = (): number => this.pageSizeJSONModel.getValue() ?? DEFAULT_PAGE_SIZE
+    public getPageValue = (): number => this.pageJSONModel.getValue() ?? DEFAULT_PAGE
+    public getLimitValue = (): number => this.limitJSONModel.getValue() ?? DEFAULT_LIMIT
 
-    public setValue = (currentPage: number | undefined, pageSize: number | undefined) => {
-        this.currentPageJSONModel.setValue(currentPage)
-        this.pageSizeJSONModel.setValue(pageSize)
+    public setValue = (page: number | undefined, limit: number | undefined) => {
+        this.pageJSONModel.setValue(page)
+        this.limitJSONModel.setValue(limit)
     }
 }

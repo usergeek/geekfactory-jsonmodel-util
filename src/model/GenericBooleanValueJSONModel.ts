@@ -6,14 +6,24 @@ export type GenericBooleanValueJSONModelSerializedState = ValueType
 
 export class GenericBooleanValueJSONModel {
     private value: ValueType
+    private defaultValue: ValueType
 
-    constructor(serializedState?: GenericBooleanValueJSONModelSerializedState) {
+    constructor(serializedState?: GenericBooleanValueJSONModelSerializedState, defaultValue?: ValueType) {
+        this.defaultValue = defaultValue
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
 
+    public setDefaultValue = (defaultValue?: ValueType) => {
+        this.defaultValue = defaultValue
+    }
+
+    public isDefaultValue = () => {
+        return this.value === this.defaultValue
+    }
+
     public reset = () => {
-        this.value = undefined
+        this.value = this.defaultValue
     };
 
     public overwriteFromSerializedState = (serializedState?: GenericBooleanValueJSONModelSerializedState) => {
@@ -21,6 +31,9 @@ export class GenericBooleanValueJSONModel {
     }
 
     public serialize = (): GenericBooleanValueJSONModelSerializedState | undefined => {
+        if (this.value === this.defaultValue) {
+            return undefined
+        }
         return this.value
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "geekfactory-jsonmodel-util",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "JS JSON model by GeekFactory",
   "main": "./lib/es5/index.js",
   "author": "GeekFactory <support@usergeek.com>",
@@ -17,7 +17,7 @@
     "prebuild": "npm run clean",
     "build": "tsc --project tsconfig.json"
   },
-  "dependencies": {
+  "peerDependencies": {
     "lodash": ">=4.17.21"
   },
   "devDependencies": {

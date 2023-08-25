@@ -1,14 +1,14 @@
 import {GenericArrayValueJSONModel, GenericArrayValueJSONModelSerializedState} from "./GenericArrayValueJSONModel";
 import {GenericStringValueJSONModel} from "./GenericStringValueJSONModel";
 
-export type GenericFilterJSONModelSerializedState<Value> = GenericArrayValueJSONModelSerializedState<Value>
+export type GenericFilterJSONModelSerializedState<Name, Value> = GenericArrayValueJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>
 
 export type GenericFilterJSONModelArrayValue<Name, Value> = GenericFilterItemJSONModelSerializedState<Name, Value>
 
 export class GenericFilterJSONModel<Name, Value> {
     private filterValuesJSONModel = new GenericArrayValueJSONModel<GenericFilterJSONModelArrayValue<Name, Value>>()
 
-    constructor(serializedState?: GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>) {
+    constructor(serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) {
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
@@ -17,13 +17,11 @@ export class GenericFilterJSONModel<Name, Value> {
         this.filterValuesJSONModel.reset()
     }
 
-    public overwriteFromSerializedState = (serializedState?: GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>) => {
-        if (serializedState) {
-            this.filterValuesJSONModel.overwriteFromSerializedState(serializedState)
-        }
+    public overwriteFromSerializedState = (serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) => {
+        this.filterValuesJSONModel.overwriteFromSerializedState(serializedState)
     }
 
-    public serialize = (): GenericFilterJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>> => {
+    public serialize = (): GenericFilterJSONModelSerializedState<Name, Value> => {
         return this.filterValuesJSONModel.serialize()
     }
 

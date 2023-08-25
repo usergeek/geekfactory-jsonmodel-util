@@ -5,6 +5,7 @@ export declare class GenericNumberValueJSONModel {
     private defaultValue;
     constructor(serializedState?: GenericNumberValueJSONModelSerializedState, defaultValue?: ValueType);
     setDefaultValue: (defaultValue?: ValueType) => void;
+    isDefaultValue: () => boolean;
     reset: () => void;
     overwriteFromSerializedState: (serializedState?: GenericNumberValueJSONModelSerializedState) => void;
     serialize: () => GenericNumberValueJSONModelSerializedState | undefined;
