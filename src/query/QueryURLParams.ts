@@ -18,9 +18,9 @@ export type PaginationQueryURLParams = { limit: number, page: number }
 export type SortQueryURLParams<SortKey extends string> = { sort: Array<SortKey | `-${SortKey}`> }
 /**
  * Filtering
- * @param {Record<`filter:${FilterKey}`, Array<FilterValue>>} filter - object with FilterKey as key and array of filter values as FilterValue. Default: {}
+ * @param {Record<`filter_${FilterKey}`, Array<FilterValue>>} filter - object with FilterKey as key and array of filter values as FilterValue. Default: {}
  */
-export type FilterQueryURLParams<FilterKey extends string, FilterValue extends Key> = Record<`filter:${FilterKey}`, Array<FilterValue>>
+export type FilterQueryURLParams<FilterKey extends string, FilterValue extends Key> = Record<`filter_${FilterKey}`, Array<FilterValue>>
 
 /**
  * QueryURLParams
@@ -29,7 +29,7 @@ export type FilterQueryURLParams<FilterKey extends string, FilterValue extends K
  *     limit: number,
  *     page: number,
  *     sort: Array<SortKey | `-${SortKey}`>,
- *     `filter:${FilterKey}`: Array<FilterValue>
+ *     `filter_${FilterKey}`: Array<FilterValue>
  * }
  */
 export type QueryURLParams<SortKey extends string = never, FilterKey extends string = never, FilterValue extends Key = never> = PaginationQueryURLParams & SortQueryURLParams<SortKey> & FilterQueryURLParams<FilterKey, FilterValue>
@@ -73,9 +73,9 @@ const getSortQueryURLParamsFromSortJSONModelSerializedState = <SortKey extends s
 
 const getFilterQueryURLParamsFromFilterJSONModelSerializedState = <FilterKey extends string, FilterValue extends Key>(filter: GenericFilterJSONModel<FilterKey, FilterValue>): FilterQueryURLParams<FilterKey, FilterValue> => {
     const value: Array<GenericFilterJSONModelArrayValue<FilterKey, FilterValue>> | undefined = filter.getFilterValuesJSONModel().getValue();
-    return _.reduce<GenericFilterJSONModelArrayValue<FilterKey, FilterValue>, Record<`filter:${FilterKey}`, Array<FilterValue>>>(value, (result, v) => {
+    return _.reduce<GenericFilterJSONModelArrayValue<FilterKey, FilterValue>, Record<`filter_${FilterKey}`, Array<FilterValue>>>(value, (result, v) => {
         if (v.name != undefined && v.values != undefined && v.values.length > 0) {
-            const key = `filter:${v.name}`
+            const key = `filter_${v.name}`
             result[key] = v.values
         }
         return result

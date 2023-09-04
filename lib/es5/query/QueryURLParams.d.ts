@@ -20,9 +20,9 @@ export declare type SortQueryURLParams<SortKey extends string> = {
 };
 /**
  * Filtering
- * @param {Record<`filter:${FilterKey}`, Array<FilterValue>>} filter - object with FilterKey as key and array of filter values as FilterValue. Default: {}
+ * @param {Record<`filter_${FilterKey}`, Array<FilterValue>>} filter - object with FilterKey as key and array of filter values as FilterValue. Default: {}
  */
-export declare type FilterQueryURLParams<FilterKey extends string, FilterValue extends Key> = Record<`filter:${FilterKey}`, Array<FilterValue>>;
+export declare type FilterQueryURLParams<FilterKey extends string, FilterValue extends Key> = Record<`filter_${FilterKey}`, Array<FilterValue>>;
 /**
  * QueryURLParams
  * Cumulative type of all query params types in format:
@@ -30,7 +30,7 @@ export declare type FilterQueryURLParams<FilterKey extends string, FilterValue e
  *     limit: number,
  *     page: number,
  *     sort: Array<SortKey | `-${SortKey}`>,
- *     `filter:${FilterKey}`: Array<FilterValue>
+ *     `filter_${FilterKey}`: Array<FilterValue>
  * }
  */
 export declare type QueryURLParams<SortKey extends string = never, FilterKey extends string = never, FilterValue extends Key = never> = PaginationQueryURLParams & SortQueryURLParams<SortKey> & FilterQueryURLParams<FilterKey, FilterValue>;
