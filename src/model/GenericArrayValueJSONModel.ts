@@ -23,7 +23,7 @@ export class GenericArrayValueJSONModel<T> {
         if (this.value == undefined || this.value.length == 0) {
             return undefined
         }
-        return [...this.value] as Array<T>
+        return this.value as Array<T>
     }
 
     ////////////////////////////////////////////////
@@ -31,12 +31,12 @@ export class GenericArrayValueJSONModel<T> {
     ////////////////////////////////////////////////
 
     public getValue = (): GenericArrayValueJSONModelSerializedState<T> => {
-        return [...this.value];
+        return this.value;
     }
 
     public setValue = (value?: Array<T>) => {
         if (_.isArray(value)) {
-            this.value = [...value] as unknown as Array<T>
+            this.value = value
         } else {
             this.reset()
         }
