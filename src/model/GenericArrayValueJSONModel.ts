@@ -31,12 +31,12 @@ export class GenericArrayValueJSONModel<T> {
     ////////////////////////////////////////////////
 
     public getValue = (): GenericArrayValueJSONModelSerializedState<T> => {
-        return this.value;
+        return [...this.value];
     }
 
     public setValue = (value?: Array<T>) => {
         if (_.isArray(value)) {
-            this.value = new Array(...value) as unknown as Array<T>
+            this.value = [...value] as unknown as Array<T>
         } else {
             this.reset()
         }
