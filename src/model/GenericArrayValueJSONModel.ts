@@ -36,7 +36,7 @@ export class GenericArrayValueJSONModel<T> {
 
     public setValue = (value?: Array<T>) => {
         if (_.isArray(value)) {
-            this.value = new Array(value) as unknown as Array<T>
+            this.value = new Array(...value) as unknown as Array<T>
         } else {
             this.reset()
         }
