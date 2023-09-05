@@ -23,7 +23,7 @@ export class GenericArrayValueJSONModel<T> {
         if (this.value == undefined || this.value.length == 0) {
             return undefined
         }
-        return this.value as Array<T>
+        return [...this.value] as Array<T>
     }
 
     ////////////////////////////////////////////////

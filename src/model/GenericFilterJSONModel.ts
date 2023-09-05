@@ -63,7 +63,7 @@ export class GenericFilterItemJSONModel<Name extends string, Value> {
     public serialize = (): GenericFilterItemJSONModelSerializedState<Name, Value> => {
         return {
             name: this.nameJSONModel.serialize() as GenericFilterItemName<Name>,
-            values: this.valuesJSONModel.serialize(),
+            values: [...this.valuesJSONModel.serialize()],
         }
     }
 
