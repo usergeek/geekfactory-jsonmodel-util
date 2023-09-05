@@ -1,6 +1,6 @@
 {
   "name": "geekfactory-jsonmodel-util",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "JS JSON model by GeekFactory",
   "main": "./lib/es5/index.js",
   "author": "GeekFactory <support@usergeek.com>",

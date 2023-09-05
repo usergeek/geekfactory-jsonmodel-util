@@ -1,5 +1,6 @@
 import {GenericArrayValueJSONModel, GenericArrayValueJSONModelSerializedState} from "./GenericArrayValueJSONModel";
 import {GenericStringValueJSONModel} from "./GenericStringValueJSONModel";
+import _ from "lodash"
 
 export type GenericFilterJSONModelSerializedState<Name, Value> = GenericArrayValueJSONModelSerializedState<GenericFilterJSONModelArrayValue<Name, Value>>
 
@@ -18,7 +19,7 @@ export class GenericFilterJSONModel<Name, Value> {
     }
 
     public overwriteFromSerializedState = (serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) => {
-        this.filterValuesJSONModel.overwriteFromSerializedState(serializedState)
+        this.filterValuesJSONModel.overwriteFromSerializedState(_.cloneDeep(serializedState))
     }
 
     public serialize = (): GenericFilterJSONModelSerializedState<Name, Value> => {
@@ -56,7 +57,7 @@ export class GenericFilterItemJSONModel<Name extends string, Value> {
     public overwriteFromSerializedState = (serializedState?: GenericFilterItemJSONModelSerializedState<Name, Value>) => {
         if (serializedState) {
             this.nameJSONModel.overwriteFromSerializedState(serializedState.name)
-            this.valuesJSONModel.overwriteFromSerializedState(serializedState.values)
+            this.valuesJSONModel.overwriteFromSerializedState(_.cloneDeep(serializedState.values))
         }
     }
 
