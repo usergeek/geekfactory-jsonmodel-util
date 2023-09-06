@@ -6,14 +6,24 @@ export type GenericStringValueJSONModelSerializedState<T extends string = string
 
 export class GenericStringValueJSONModel<T extends string> {
     private value: ValueType<T>
+    private defaultValue: ValueType<T>
 
-    constructor(serializedState?: GenericStringValueJSONModelSerializedState<T>) {
+    constructor(serializedState?: GenericStringValueJSONModelSerializedState<T>, defaultValue?: ValueType<T>) {
+        this.defaultValue = defaultValue
         this.reset()
         this.overwriteFromSerializedState(serializedState)
     }
 
+    public setDefaultValue = (defaultValue?: ValueType<T>) => {
+        this.defaultValue = defaultValue
+    }
+
+    public isDefaultValue = () => {
+        return this.value === this.defaultValue
+    }
+
     public reset = () => {
-        this.value = undefined
+        this.value = this.defaultValue
     };
 
     public overwriteFromSerializedState = (serializedState?: GenericStringValueJSONModelSerializedState<T>) => {

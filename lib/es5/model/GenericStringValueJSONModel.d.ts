@@ -2,7 +2,10 @@ declare type ValueType<T extends string> = T | string | undefined;
 export declare type GenericStringValueJSONModelSerializedState<T extends string = string> = ValueType<T>;
 export declare class GenericStringValueJSONModel<T extends string> {
     private value;
-    constructor(serializedState?: GenericStringValueJSONModelSerializedState<T>);
+    private defaultValue;
+    constructor(serializedState?: GenericStringValueJSONModelSerializedState<T>, defaultValue?: ValueType<T>);
+    setDefaultValue: (defaultValue?: ValueType<T>) => void;
+    isDefaultValue: () => boolean;
     reset: () => void;
     overwriteFromSerializedState: (serializedState?: GenericStringValueJSONModelSerializedState<T>) => void;
     serialize: () => GenericStringValueJSONModelSerializedState<T> | undefined;
