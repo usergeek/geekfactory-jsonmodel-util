@@ -9,7 +9,7 @@ export type SortOrder = typeof SORT_ODER_ASC | typeof SORT_ODER_DESC
 export type GenericSortingJSONModelArrayValue<SortingItemKey> = GenericSortingItemJSONModelSerializedState<SortingItemKey>
 export type GenericSortingJSONModelSerializedState<SortingItemKey> = GenericArrayValueJSONModelSerializedState<GenericSortingJSONModelArrayValue<SortingItemKey>>
 
-export class GenericSortingJSONModel<SortingItemKey> {
+export class GenericSortingJSONModel<SortingItemKey extends string> {
     private sortValuesJSONModel = new GenericArrayValueJSONModel<GenericSortingJSONModelArrayValue<SortingItemKey>>()
 
     constructor(serializedState?: GenericSortingJSONModelSerializedState<SortingItemKey>) {
@@ -25,11 +25,22 @@ export class GenericSortingJSONModel<SortingItemKey> {
         this.sortValuesJSONModel.overwriteFromSerializedState(serializedState)
     }
 
+    public overwriteFromSortValuesJSONModels = (sortValuesJSONModels?: Array<GenericSortingItemJSONModel<SortingItemKey>>) => {
+        this.overwriteFromSerializedState(sortValuesJSONModels == undefined ? undefined : _.map<GenericSortingItemJSONModel<SortingItemKey>, GenericSortingJSONModelArrayValue<SortingItemKey>>(sortValuesJSONModels, v => v.serialize()))
+    }
+
     public serialize = (): GenericSortingJSONModelSerializedState<SortingItemKey> => {
         return this.sortValuesJSONModel.serialize()
     }
 
-    public getSortValuesJSONModel = () => this.sortValuesJSONModel
+    public getSortItems = (): Array<GenericSortingItemJSONModel<SortingItemKey>> | undefined => {
+        const sortValues = this.sortValuesJSONModel.getValue();
+        if (sortValues?.length == 0) {
+            return undefined
+        }
+        return _.compact(_.map<GenericSortingJSONModelArrayValue<SortingItemKey>, GenericSortingItemJSONModel<SortingItemKey> | undefined>(sortValues, v => new GenericSortingItemJSONModel<SortingItemKey>(v)))
+    }
+
 }
 
 ////////////////////////////////////////////////
@@ -77,4 +88,9 @@ export class GenericSortingItemJSONModel<SortingItemKey extends string> {
 
     public getKeyJSONModel = () => this.keyJSONModel
     public getOrderJSONModel = () => this.orderJSONModel
+
+    public setKeyAndOrder = (key: SortingItemKey, order: SortOrder) => {
+        this.keyJSONModel.setValue(key)
+        this.orderJSONModel.setValue(order)
+    }
 }

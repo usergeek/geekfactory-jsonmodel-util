@@ -6,7 +6,7 @@ export type GenericFilterJSONModelSerializedState<Name, Value> = GenericArrayVal
 
 export type GenericFilterJSONModelArrayValue<Name, Value> = GenericFilterItemJSONModelSerializedState<Name, Value>
 
-export class GenericFilterJSONModel<Name, Value> {
+export class GenericFilterJSONModel<Name extends string, Value> {
     private filterValuesJSONModel = new GenericArrayValueJSONModel<GenericFilterJSONModelArrayValue<Name, Value>>()
 
     constructor(serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) {
@@ -19,14 +19,24 @@ export class GenericFilterJSONModel<Name, Value> {
     }
 
     public overwriteFromSerializedState = (serializedState?: GenericFilterJSONModelSerializedState<Name, Value>) => {
-        this.filterValuesJSONModel.overwriteFromSerializedState(_.cloneDeep(serializedState))
+        this.filterValuesJSONModel.overwriteFromSerializedState(serializedState)
+    }
+
+    public overwriteFromFilterValuesJSONModels = (filterValuesJSONModels?: Array<GenericFilterItemJSONModel<Name, Value>>) => {
+        this.overwriteFromSerializedState(filterValuesJSONModels == undefined ? undefined : _.map<GenericFilterItemJSONModel<Name, Value>, GenericFilterJSONModelArrayValue<Name, Value>>(filterValuesJSONModels, v => v.serialize()))
     }
 
     public serialize = (): GenericFilterJSONModelSerializedState<Name, Value> => {
         return this.filterValuesJSONModel.serialize()
     }
 
-    public getFilterValuesJSONModel = () => this.filterValuesJSONModel
+    public getFilterItems = (): Array<GenericFilterItemJSONModel<Name, Value>> | undefined => {
+        const filterValues = this.filterValuesJSONModel.getValue();
+        if (filterValues?.length == 0) {
+            return undefined
+        }
+        return _.compact(_.map<GenericFilterJSONModelArrayValue<Name, Value>, GenericFilterItemJSONModel<Name, Value> | undefined>(filterValues, filterValue => new GenericFilterItemJSONModel<Name, Value>(filterValue)))
+    }
 }
 
 ////////////////////////////////////////////////
@@ -57,7 +67,7 @@ export class GenericFilterItemJSONModel<Name extends string, Value> {
     public overwriteFromSerializedState = (serializedState?: GenericFilterItemJSONModelSerializedState<Name, Value>) => {
         if (serializedState) {
             this.nameJSONModel.overwriteFromSerializedState(serializedState.name)
-            this.valuesJSONModel.overwriteFromSerializedState(_.cloneDeep(serializedState.values))
+            this.valuesJSONModel.overwriteFromSerializedState(serializedState.values)
         }
     }
 
@@ -70,4 +80,9 @@ export class GenericFilterItemJSONModel<Name extends string, Value> {
 
     public getNameJSONModel = () => this.nameJSONModel
     public getValuesJSONModel = () => this.valuesJSONModel
+
+    public setNameAndValues = (name: Name, values: Array<Value>) => {
+        this.nameJSONModel.setValue(name)
+        this.valuesJSONModel.setValue(values)
+    }
 }

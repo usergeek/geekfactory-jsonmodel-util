@@ -1,5 +1,5 @@
-import {GenericSortingJSONModel, GenericSortingJSONModelArrayValue, SortOrder} from "../model/GenericSortingJSONModel";
-import {GenericFilterJSONModel, GenericFilterJSONModelArrayValue} from "../model/GenericFilterJSONModel";
+import {GenericSortingItemJSONModel, GenericSortingJSONModel, GenericSortingJSONModelArrayValue, SortOrder} from "../model/GenericSortingJSONModel";
+import {GenericFilterItemJSONModel, GenericFilterJSONModel, GenericFilterJSONModelArrayValue} from "../model/GenericFilterJSONModel";
 import {GenericPagingJSONModel} from "../model/GenericPagingJSONModel";
 import _ from "lodash"
 
@@ -53,15 +53,17 @@ const getPaginationQueryURLParamsFromPagingJSONModelSerializedState = (paging: G
 }
 
 const getSortQueryURLParamsFromSortJSONModelSerializedState = <SortKey extends string, >(sorting: GenericSortingJSONModel<SortKey>): SortQueryURLParams<SortKey> => {
-    const value: Array<GenericSortingJSONModelArrayValue<SortKey>> | undefined = sorting.getSortValuesJSONModel().getValue();
+    const value: Array<GenericSortingItemJSONModel<SortKey>> | undefined = sorting.getSortItems()
     return {
-        sort: _.compact(_.map<GenericSortingJSONModelArrayValue<SortKey>, SortKey | `-${SortKey}` | undefined>(value, v => {
-            if (v.key != undefined && v.order != undefined) {
-                switch (v.order as SortOrder) {
+        sort: _.compact(_.map<GenericSortingItemJSONModel<SortKey>, SortKey | `-${SortKey}` | undefined>(value, v => {
+            const key = v.getKeyJSONModel().getValue()
+            const order = v.getOrderJSONModel().getValue()
+            if (key != undefined && order != undefined) {
+                switch (order as SortOrder) {
                     case "asc" :
-                        return `${v.key}` as SortKey
+                        return `${key}` as SortKey
                     case "desc" :
-                        return `-${v.key}` as `-${SortKey}`
+                        return `-${key}` as `-${SortKey}`
                     default:
                         return undefined
                 }
@@ -72,11 +74,13 @@ const getSortQueryURLParamsFromSortJSONModelSerializedState = <SortKey extends s
 }
 
 const getFilterQueryURLParamsFromFilterJSONModelSerializedState = <FilterKey extends string, FilterValue extends Key>(filter: GenericFilterJSONModel<FilterKey, FilterValue>): FilterQueryURLParams<FilterKey, FilterValue> => {
-    const value: Array<GenericFilterJSONModelArrayValue<FilterKey, FilterValue>> | undefined = filter.getFilterValuesJSONModel().getValue();
-    return _.reduce<GenericFilterJSONModelArrayValue<FilterKey, FilterValue>, Record<`filter_${FilterKey}`, Array<FilterValue>>>(value, (result, v) => {
-        if (v.name != undefined && v.values != undefined && v.values.length > 0) {
-            const key = `filter_${v.name}`
-            result[key] = v.values
+    const value: Array<GenericFilterItemJSONModel<FilterKey, FilterValue>> | undefined = filter.getFilterItems()
+    return _.reduce<GenericFilterItemJSONModel<FilterKey, FilterValue>, Record<`filter_${FilterKey}`, Array<FilterValue>>>(value, (result, v) => {
+        const name = v.getNameJSONModel().getValue()
+        const values = v.getValuesJSONModel().getValue()
+        if (name != undefined && values != undefined && values.length > 0) {
+            const key = `filter_${name}`
+            result[key] = values
         }
         return result
     }, {} as FilterQueryURLParams<FilterKey, FilterValue>)
