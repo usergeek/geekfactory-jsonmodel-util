@@ -3,7 +3,7 @@ import {GenericFilterItemJSONModel, GenericFilterJSONModel, GenericFilterJSONMod
 import {GenericPagingJSONModel} from "../model/GenericPagingJSONModel";
 import _ from "lodash"
 
-type Key = string | number;
+type Key = string | number | boolean;
 
 /**
  * Paging

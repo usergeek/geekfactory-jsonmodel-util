@@ -1,7 +1,7 @@
 import { GenericSortingJSONModel } from "../model/GenericSortingJSONModel";
 import { GenericFilterJSONModel } from "../model/GenericFilterJSONModel";
 import { GenericPagingJSONModel } from "../model/GenericPagingJSONModel";
-declare type Key = string | number;
+declare type Key = string | number | boolean;
 /**
  * Paging
  * @param {number} limit - number of items per page. Default: 10
